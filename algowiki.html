@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Учебник по алгоритмам и структурам данных на C++. Примеры кода, теория и практические реализации.">
+    <title>AlgoWiki — Алгоритмы и структуры данных на C++</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%232563eb' rx='18' width='100' height='100'/%3E%3Ctext x='50' y='68' font-size='55' text-anchor='middle' fill='white' font-family='system-ui, sans-serif' font-weight='700'%3EA%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect fill='%232563eb' rx='32' width='180' height='180'/%3E%3Ctext x='90' y='125' font-size='100' text-anchor='middle' fill='white' font-family='system-ui, sans-serif' font-weight='700'%3EA%3C/text%3E%3C/svg%3E">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Highlight.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]], processEscapes: true },
+            startup: { pageReady: () => MathJax.startup.defaultPageReady() }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        code, pre { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 7px; height: 7px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+        
+        /* Article typography */
+        .article-content h2 { font-size: 1.75rem; font-weight: 700; color: #111827; margin-top: 2.5rem; margin-bottom: 1rem; line-height: 1.2; }
+        .article-content h3 { font-size: 1.35rem; font-weight: 600; color: #1f2937; margin-top: 2rem; margin-bottom: 0.75rem; line-height: 1.3; }
+        .article-content h4 { font-size: 1.1rem; font-weight: 600; color: #374151; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        .article-content p { margin-bottom: 1.25rem; color: #374151; line-height: 1.8; font-size: 1rem; }
+        .article-content ul, .article-content ol { padding-left: 1.5rem; margin-bottom: 1.25rem; color: #374151; line-height: 1.8; }
+        .article-content li { margin-bottom: 0.5rem; }
+        .article-content li > ul { margin-top: 0.5rem; }
+        .article-content code { background-color: #f3f4f6; padding: 0.15rem 0.4rem; border-radius: 0.3rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: #dc2626; border: 1px solid #e5e7eb; }
+        .article-content strong { color: #111827; font-weight: 600; }
+        .article-content a { color: #2563eb; text-decoration: underline; text-underline-offset: 2px; }
+        .article-content a:hover { color: #1d4ed8; }
+        .article-content blockquote { border-left: 4px solid #e5e7eb; padding-left: 1rem; margin-left: 0; color: #6b7280; font-style: italic; }
+        .article-content hr { border: none; border-top: 1px solid #e5e7eb; margin: 2rem 0; }
+        .article-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+        .article-content th, .article-content td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb; }
+        .article-content th { font-weight: 600; color: #111827; background: #f9fafb; }
+        .article-content td { color: #374151; }
+        
+        /* Sidebar active state */
+        .nav-active { 
+            background-color: #eff6ff; 
+            color: #1e40af; 
+            font-weight: 500; 
+            border-left: 3px solid #2563eb; 
+        }
+        
+        /* Code block styling */
+        .code-wrapper { 
+            position: relative; 
+            border-radius: 0.75rem; 
+            overflow: hidden; 
+            border: 1px solid #e5e7eb; 
+            margin: 1.5rem 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .code-header {
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .code-header-dots { display: flex; gap: 0.4rem; }
+        .code-header-dots span { width: 10px; height: 10px; border-radius: 50%; }
+        .code-header-dots span:nth-child(1) { background: #ef4444; }
+        .code-header-dots span:nth-child(2) { background: #f59e0b; }
+        .code-header-dots span:nth-child(3) { background: #22c55e; }
+        .code-header-filename { font-size: 0.8rem; color: #6b7280; font-family: 'JetBrains Mono', monospace; }
+        .copy-btn { 
+            background: #f3f4f6; 
+            color: #374151; 
+            border: 1px solid #d1d5db; 
+            padding: 0.35rem 0.75rem; 
+            border-radius: 0.375rem; 
+            font-size: 0.75rem; 
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .copy-btn:hover { background: #e5e7eb; }
+        .copy-btn.copied { background: #dcfce7; color: #166534; border-color: #86efac; }
+        .code-wrapper pre { margin: 0; padding: 1.25rem; background: #fafafa; overflow-x: auto; }
+        .code-wrapper pre code { font-size: 0.85rem; line-height: 1.6; border: none; background: transparent; padding: 0; color: #1f2937; }
+        
+        /* Inline code in description */
+        .article-content pre { 
+            background: #fafafa; 
+            border: 1px solid #e5e7eb; 
+            border-radius: 0.5rem; 
+            padding: 1rem; 
+            overflow-x: auto; 
+            margin: 1rem 0;
+        }
+        .article-content pre code { 
+            background: transparent; 
+            border: none; 
+            padding: 0; 
+            font-size: 0.85rem; 
+            color: #1f2937;
+        }
+        
+        /* TOC sidebar */
+        .toc-link { 
+            display: block; 
+            padding: 0.35rem 0.75rem; 
+            font-size: 0.8rem; 
+            color: #6b7280; 
+            border-left: 2px solid transparent;
+            transition: all 0.15s;
+        }
+        .toc-link:hover { color: #2563eb; border-left-color: #bfdbfe; }
+        .toc-link.active { color: #2563eb; border-left-color: #2563eb; font-weight: 500; }
+        
+        /* Mobile menu overlay */
+        .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 40; }
+        .mobile-overlay.open { display: block; }
+        
+        /* Smooth anchor scrolling */
+        html { scroll-behavior: smooth; }
+        
+        /* Article info bar */
+        .article-meta { 
+            display: flex; 
+            gap: 1.5rem; 
+            align-items: center; 
+            font-size: 0.85rem; 
+            color: #6b7280; 
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .article-meta-item { display: flex; align-items: center; gap: 0.35rem; }
+        
+        /* Breadcrumb */
+        .breadcrumb { font-size: 0.8rem; color: #9ca3af; }
+        .breadcrumb a { color: #6b7280; text-decoration: none; }
+        .breadcrumb a:hover { color: #2563eb; text-decoration: underline; }
+        .breadcrumb-sep { margin: 0 0.5rem; color: #d1d5db; }
+        
+        /* Sidebar nav item numbering */
+        .nav-number { 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            width: 1.5rem; 
+            height: 1.5rem; 
+            background: #f3f4f6; 
+            color: #6b7280; 
+            border-radius: 0.25rem; 
+            font-size: 0.7rem; 
+            font-weight: 600; 
+            margin-right: 0.5rem;
+            flex-shrink: 0;
+        }
+        .nav-active .nav-number { background: #dbeafe; color: #2563eb; }
+        
+        /* Top nav links */
+        .top-nav-link { 
+            color: #4b5563; 
+            font-size: 0.875rem; 
+            font-weight: 500; 
+            padding: 0.5rem 0.75rem; 
+            border-radius: 0.375rem; 
+            transition: all 0.15s;
+            text-decoration: none;
+        }
+        .top-nav-link:hover { color: #111827; background: #f3f4f6; }
+        
+        /* Reading progress bar */
+        #progress-bar { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            height: 2px; 
+            background: #2563eb; 
+            z-index: 50; 
+            transition: width 0.1s; 
+            width: 0%;
+        }
+        
+        /* Sidebar collapsed state */
+        .sidebar-collapsed { width: 0 !important; overflow: hidden; border: none; padding: 0; }
+        .sidebar-collapsed * { opacity: 0; pointer-events: none; }
+        
+        /* Collapse button */
+        .collapse-btn { display: none; }
+        @media (min-width: 768px) { .collapse-btn { display: flex; } }
+        
+        /* Print styles */
+        @media print {
+            .no-print { display: none !important; }
+            #main-content-container { overflow: visible !important; }
+            body { overflow: visible !important; height: auto !important; }
+        }
+        
+        /* MathJax */
+        mjx-container { font-size: 1em !important; }
+    </style>
+</head>
+<body class="bg-white text-gray-800 antialiased h-screen flex overflow-hidden">
+    <div id="progress-bar"></div>
+
+    <!-- Mobile overlay -->
+    <div id="mobile-overlay" class="mobile-overlay no-print" onclick="toggleMobileSidebar()"></div>
+
+    <!-- Left Sidebar (Navigation) -->
+    <aside id="left-sidebar" class="w-72 bg-white border-r border-gray-200 flex flex-col h-full shrink-0 z-50 hidden md:flex fixed md:relative inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-all duration-200">
+        <!-- Logo -->
+        <div class="p-5 border-b border-gray-100 flex items-center gap-3">
+            <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-sm">A</div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-lg font-bold text-gray-900 tracking-tight leading-tight">AlgoWiki</h1>
+                <p class="text-xs text-gray-400 truncate">Алгоритмы и структуры данных</p>
+            </div>
+            <button class="collapse-btn p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors" onclick="toggleDesktopSidebar()" title="Скрыть панель">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/></svg>
+            </button>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto py-4">
+            <div class="mb-6 px-4">
+                <h2 class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2 px-3 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>
+                    Теория
+                </h2>
+                <ul class="space-y-0.5" id="theory-nav"></ul>
+            </div>
+            <div class="px-4">
+                <h2 class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2 px-3 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                    Практика
+                </h2>
+                <ul class="space-y-0.5" id="practice-nav"></ul>
+            </div>
+        </div>
+        <div class="p-4 border-t border-gray-100 text-xs text-gray-400 text-center">
+            <p>AlgoWiki &copy; 2024</p>
+        </div>
+    </aside>
+
+    <button id="expand-sidebar-btn" class="hidden fixed bottom-6 left-4 z-40 w-10 h-10 bg-white border border-gray-200 rounded-full shadow-lg items-center justify-center text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-all" onclick="toggleDesktopSidebar()" title="Показать панель">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
+    </button>
+
+    <main class="flex-1 flex flex-col h-full min-w-0">
+        <header class="bg-white border-b border-gray-200 h-14 flex items-center px-4 md:px-6 justify-between shrink-0 z-20">
+            <div class="flex items-center gap-3">
+                <button class="md:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100 text-gray-500" onclick="toggleMobileSidebar()">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <nav class="breadcrumb" aria-label="Breadcrumb">
+                    <a href="#" onclick="goHome(event)">Главная</a>
+                    <span class="breadcrumb-sep">/</span>
+                    <span id="breadcrumb-category">Раздел</span>
+                    <span class="breadcrumb-sep">/</span>
+                    <span id="breadcrumb-title" class="text-gray-600 font-medium">Статья</span>
+                </nav>
+            </div>
+            <div class="flex items-center gap-2 no-print">
+                <span class="text-xs text-gray-400 hidden sm:inline">Alt + &larr; / &rarr; для навигации</span>
+                <button onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-gray-100 text-gray-500 transition-colors" title="Тема">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                </button>
+                <a href="https://github.com" target="_blank" class="p-2 rounded-lg hover:bg-gray-100 text-gray-500 transition-colors" title="GitHub">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                </a>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto scroll-smooth" id="main-content-container" onscroll="updateProgress()">
+            <div class="max-w-5xl mx-auto flex">
+                <article class="flex-1 min-w-0 px-5 py-8 md:px-10 md:py-12 lg:pr-16">
+                    <div class="mb-2">
+                        <span id="article-category-badge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 mb-3">Пример кода</span>
+                    </div>
+                    <h1 id="content-title" class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight tracking-tight">Добро пожаловать в AlgoWiki</h1>
+                    <div class="article-meta">
+                        <span class="article-meta-item">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            <span id="article-date">15 декабря 2024</span>
+                        </span>
+                        <span class="article-meta-item">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                            <span id="reading-time">5 мин</span>
+                        </span>
+                        <span class="article-meta-item">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                            <span>C++17</span>
+                        </span>
+                    </div>
+                    <div id="content-description" class="article-content text-lg mb-10 leading-relaxed">
+                        <p>AlgoWiki — это открытый учебник по алгоритмам и структурам данных на языке C++. Здесь собраны теоретические материалы и практические примеры, которые помогут разобраться в ключевых концепциях программирования.</p>
+                        <p>Выберите интересующий раздел в навигационном меню слева, чтобы начать изучение. Каждая статья содержит подробное объяснение алгоритма и полный листинг программы с комментариями.</p>
+                    </div>
+                    <div id="toc-container" class="hidden mb-10 p-5 bg-gray-50 rounded-xl border border-gray-100">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3 uppercase tracking-wider">Содержание</h3>
+                        <nav id="toc-list" class="space-y-1"></nav>
+                    </div>
+                    <div id="code-container" class="hidden">
+                        <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                            Полный листинг программы
+                        </h2>
+                        <div class="code-wrapper">
+                            <div class="code-header">
+                                <div class="flex items-center gap-3">
+                                    <div class="code-header-dots"><span></span><span></span><span></span></div>
+                                    <span class="code-header-filename">main.cpp</span>
+                                </div>
+                                <button id="copy-btn" class="copy-btn" onclick="copyCode()">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                                    Копировать
+                                </button>
+                            </div>
+                            <pre><code id="code-block" class="language-cpp"></code></pre>
+                        </div>
+                    </div>
+                    <div id="article-footer" class="hidden mt-12 pt-8 border-t border-gray-200">
+                        <div class="flex justify-between items-center">
+                            <button id="prev-btn" onclick="navigatePrev()" class="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors text-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                                <span>Предыдущая статья</span>
+                            </button>
+                            <button id="next-btn" onclick="navigateNext()" class="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors text-sm">
+                                <span>Следующая статья</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                <aside class="hidden lg:block w-56 shrink-0 py-12 pr-6">
+                    <div class="sticky top-8">
+                        <h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-3">На этой странице</h3>
+                        <nav id="right-toc" class="space-y-0.5 border-l border-gray-200"></nav>
+                    </div>
+                </aside>
+            </div>
+            <footer class="border-t border-gray-200 mt-16 py-10 px-6">
+                <div class="max-w-5xl mx-auto">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">A</div>
+                            <div>
+                                <p class="font-semibold text-gray-900 text-sm">AlgoWiki</p>
+                                <p class="text-xs text-gray-400">Учебник по алгоритмам и структурам данных</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-6 text-sm text-gray-500">
+                            <a href="#" class="hover:text-gray-900 transition-colors">О проекте</a>
+                            <a href="#" class="hover:text-gray-900 transition-colors">GitHub</a>
+                            <a href="#" class="hover:text-gray-900 transition-colors">Обратная связь</a>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-gray-100 text-center text-xs text-gray-400">
+                        <p>AlgoWiki &copy; 2024. Материалы распространяются под лицензией MIT.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </main>
+    <script>
+        const db = {
+            theory: [
+                {
+                    title: "Базовые структуры и алгоритмы поиска",
+                    desc: `
+                        <p>Любая программа, так или иначе, работает с данными. Эффективность ее работы напрямую зависит от того, насколько удачно выбрана структура данных для хранения информации и алгоритм для ее обработки. В этом разделе мы рассмотрим фундаментальные структуры данных и базовые алгоритмы поиска, которые лежат в основе более сложных конструкций.</p>
+                        <p>Понимание асимптотической сложности операций — ключевой навык любого программиста. Он позволяет предсказывать поведение программы на больших объемах данных и выбирать оптимальный инструмент для конкретной задачи.</p>
+                        <h3>Типы данных в C++</h3>
+                        <p>В языке C++ применяются различные структурированные типы для организации данных. Рассмотрим наиболее распространенные из них:</p>
+                        <ul>
+                            <li><strong>Массивы:</strong> самая простая структура, обеспечивающая доступ к элементу по индексу за O(1). Однако вставка и удаление в середине массива требуют O(N) операций из-за необходимости сдвигать элементы. Массивы являются базовой структурой, на которой строятся многие другие.</li>
+                            <li><strong>Записи (struct / union):</strong> объединение различных типов в одну логическую единицу. Ключевое отличие <code>union</code> от <code>struct</code> — все поля union накладываются друг на друга в одной области памяти. Это позволяет экономить память, но обращаться можно только к одному полю за раз.</li>
+                            <li><strong>Множества:</strong> часто реализуются через битовые маски, что позволяет эффективно выполнять операции объединения, пересечения и дополнения за O(1) на элемент (при условии достаточно малого универсума).</li>
+                        </ul>
+                        <h3>Алгоритмы поиска</h3>
+                        <p>Поиск элемента в массиве — одна из самых распространенных задач. Различают два основных подхода:</p>
+                        <ul>
+                            <li><strong>Линейный поиск:</strong> имеет сложность O(N). Проверяет каждый элемент последовательно до тех пор, пока не найдет искомый или не закончит массив. Важной оптимизацией является <strong>метод барьера</strong> — добавление искомого элемента в конец массива для исключения проверки выхода за границы внутри цикла. Это ускоряет выполнение на 10-15% за счет уменьшения количества условных переходов.</li>
+                            <li><strong>Бинарный поиск:</strong> работает за O(log N), но требует предварительно отсортированных данных. На каждом шаге сравнивает искомый элемент с серединой текущего диапазона и отбрасывает половину. Классическая ошибка новичков — неправильное вычисление среднего индекса (переполнение при <code>(l + r) / 2</code>). Правильный вариант: <code>l + (r - l) / 2</code>.</li>
+                        </ul>
+                        <h3>Когда что применять?</h3>
+                        <p>Линейный поиск предпочтителен для небольших массивов (до 50 элементов) и несортированных данных. Бинарный поиск — для больших отсортированных массивов, где он демонстрирует экспоненциальное преимущество: на массиве из миллиона элементов потребуется не более 20 сравнений вместо 500 000.</p>`,
+                    date: "12 ноября 2024",
+                    readTime: "8 мин"
+                },
+                {
+                    title: "Последовательности: стек, очередь и дек",
+                    desc: `
+                        <p>Абстрактные типы данных (ADT), основанные на последовательном доступе к элементам, являются краеугольным камнем многих алгоритмов. Их правильное применение позволяет элегантно решать задачи, которые в лобной реализации выглядели бы громоздко и неэффективно.</p>
+                        <p>Каждая из этих структур определяется не столько внутренним устройством, сколько набором допустимых операций — это и есть суть абстрактного типа данных.</p>
+                        <h3>Стек (LIFO — Last In, First Out)</h3>
+                        <p>Стек работает по принципу "последним пришел — первым ушел". Это одна из самых важных структур в программировании:</p>
+                        <ul>
+                            <li><strong>Обход графов в глубину (DFS):</strong> стек хранит вершины, ожидающие обработки. Вместо рекурсии можно использовать явный стек — это позволяет избежать переполнения системного стека на глубоких графах.</li>
+                            <li><strong>Парсинг скобочных выражений:</strong> при встрече открывающей скобки кладем ее в стек, при закрывающей — извлекаем. Если скобки не совпадают, выражение некорректно.</li>
+                            <li><strong>Хранение состояния рекурсии:</strong> каждый вызов функции добавляет кадр активации в системный стек. Понимание этого механизма критично для отладки переполнения стека.</li>
+                        </ul>
+                        <h3>Очередь (FIFO — First In, First Out)</h3>
+                        <p>Очередь работает по принципу "первым пришел — первым ушел". Классические применения:</p>
+                        <ul>
+                            <li><strong>Буферизация данных:</strong> потоки данных обрабатываются в порядке поступления, что предотвращает потерю информации при всплесках нагрузки.</li>
+                            <li><strong>Планировщики задач:</strong> операционные системы используют очереди для управления процессами (round-robin scheduling).</li>
+                            <li><strong>Волновые алгоритмы (BFS):</strong> поиск в ширину на графах использует очередь для обработки вершин по слоям. Это гарантирует нахождение кратчайшего пути в невзвешенном графе.</li>
+                        </ul>
+                        <p>Эффективная реализация очереди на массиве использует <strong>кольцевой буфер</strong> — два указателя (head и tail) циклически перемещаются по массиву, что дает O(1) на все операции без дополнительных аллокаций.</p>
+                        <h3>Дек (Deque — Double-Ended Queue)</h3>
+                        <p>Дек — универсальная двусторонняя очередь. Он позволяет добавлять и извлекать элементы с обоих концов за амортизированное константное время, комбинируя возможности стека и очереди. В C++ стандартная библиотека предоставляет <code>std::deque</code>, который использует блоки фиксированного размера — это дает лучшую локальность кэша, чем связный список, при сохранении O(1) на вставку в начало и конец.</p>
+                        <h3>Сравнение структур</h3>
+                        <table>
+                            <thead><tr><th>Структура</th><th>Добавление</th><th>Извлечение</th><th>Порядок</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Стек</strong></td><td>O(1) — верх</td><td>O(1) — верх</td><td>LIFO</td></tr>
+                                <tr><td><strong>Очередь</strong></td><td>O(1) — хвост</td><td>O(1) — голова</td><td>FIFO</td></tr>
+                                <tr><td><strong>Дек</strong></td><td>O(1) — оба</td><td>O(1) — оба</td><td>Гибкий</td></tr>
+                            </tbody>
+                        </table>`,
+                    date: "18 ноября 2024",
+                    readTime: "10 мин"
+                },
+                {
+                    title: "Простые квадратичные сортировки",
+                    desc: `
+                        <p>Хотя асимптотическая сложность O(N^2) кажется непривлекательной на фоне O(N log N), алгоритмы квадратичной сложности остаются актуальными в специфических сценариях: небольшие массивы, почти отсортированные данные, или когда минимизация операций обмена важнее асимптотики. Более того, именно они лежат в основе гибридных алгоритмов вроде Timsort и Introsort.</p>
+                        <p>Понимание их устройства помогает глубже осознать принципы работы более сложных алгоритмов и выбирать подходящий инструмент для конкретной задачи.</p>
+                        <h3>Сортировка обменом (Пузырек)</h3>
+                        <p>Алгоритм последовательно сравнивает соседние элементы и меняет их местами при нарушении порядка. За один проход "всплывает" самый большой элемент — отсюда и название.</p>
+                        <p>Ключевая оптимизация — <strong>флаг отсортированности</strong>: если за проход не было обменов, массив уже упорядочен и можно завершить работу. Это дает лучшее время O(N) на уже отсортированных данных.</p>
+                        <p>Интересный факт: пузырьковая сортировка выполняет минимальное количество записей среди всех сортировок сравнением — это ценно для флеш-памяти, где запись дороже чтения.</p>
+                        <h3>Сортировка выбором</h3>
+                        <p>На каждом проходе алгоритм ищет минимальный элемент в правой (неотсортированной) части массива и ставит его на текущую позицию.</p>
+                        <p>Характерные особенности:</p>
+                        <ul>
+                            <li>Всегда выполняет ровно N(N-1)/2 сравнений — независимо от исходного порядка.</li>
+                            <li>Делает <em>минимальное</em> количество перестановок — не более N-1. Это ценно при дорогих операциях копирования (например, сортировка больших объектов).</li>
+                            <li>Неустойчива: равные элементы могут поменять относительный порядок.</li>
+                        </ul>
+                        <h3>Сортировка вставками</h3>
+                        <p>Алгоритм постепенно строит отсортированную последовательность, "вставляя" каждый новый элемент в правильную позицию уже отсортированной левой части.</p>
+                        <p>Это один из самых эффективных алгоритмов для:</p>
+                        <ul>
+                            <li>Почти отсортированных данных — время работы стремится к O(N).</li>
+                            <li>Маленьких массивов (до 20 элементов) — накладные расходы минимальны, а константа скрыта в O невелика.</li>
+                            <li>Онлайн-сортировки — можно обрабатывать поток данных, приходящий по частям.</li>
+                        </ul>
+                        <p>Именно поэтому сортировка вставками используется в гибридных алгоритмах (QuickSort + InsertionSort) для финальной доводки мелких подмассивов.</p>`,
+                    date: "24 ноября 2024",
+                    readTime: "12 мин"
+                },
+                {
+                    title: "Быстрая сортировка (QuickSort)",
+                    desc: `
+                        <p>QuickSort, разработанный Тони Хоаром в 1960 году, остается одним из самых эффективных и широко используемых алгоритмов сортировки. Его среднее время работы O(N log N) и отличная производительность на современных кэш-архитектурах делают его предпочтительным выбором в стандартных библиотеках большинства языков программирования — от C++ (<code>std::sort</code>) до Python (<code>list.sort()</code>).</p>
+                        <h3>Метод "Разделяй и властвуй"</h3>
+                        <p>Алгоритм основан на рекурсивном разбиении массива относительно выбранного опорного элемента (pivot). Все элементы, меньшие pivot, перемещаются влево, а большие — вправо. Затем процедура рекурсивно применяется к левой и правой частям.</p>
+                        <p>Этот подход существенно отличается от сортировки слиянием (MergeSort): QuickSort не требует дополнительной памяти под слияние, работая прямо в исходном массиве. Однако он не гарантирует устойчивость — равные элементы могут изменить относительный порядок.</p>
+                        <h3>Критически важные детали реализации</h3>
+                        <ul>
+                            <li><strong>Выбор pivot:</strong> неудачный выбор (например, всегда первый элемент на уже отсортированном массиве) приводит к деградации до O(N^2). Оптимальная стратегия — медиана трех случайных элементов или случайный выбор. В промышленных реализациях используется более сложный алгоритм выбора (median-of-medians).</li>
+                            <li><strong>Разбиение (partition):</strong> существует несколько схем — Lomuto (проще, но менее эффективна) и Hoare (сложнее, но меньше обменов). Схема Hoare работает быстрее в среднем на 3-4 раза.</li>
+                            <li><strong>Хвостовая рекурсия:</strong> для предотвращения переполнения стека рекомендуется сначала рекурсивно обрабатывать меньшую часть, а большую — в цикле.</li>
+                            <li><strong>Гибридизация:</strong> для подмассивов меньше порога (обычно 10-20 элементов) переключение на сортировку вставками дает 20-30% прироста производительности.</li>
+                        </ul>
+                        <h3>Сложность</h3>
+                        <ul>
+                            <li><strong>Лучший и средний случай:</strong> O(N log N)</li>
+                            <li><strong>Худший случай:</strong> O(N^2) — при систематически неудачном выборе pivot</li>
+                            <li><strong>Память:</strong> O(log N) под стек вызовов рекурсии (в лучшем случае)</li>
+                        </ul>
+                        <p>Интересно, что математически доказано: среднее время QuickSort при случайном pivot минимально среди всех сортировок сравнением, если учитывать только операции сравнения.</p>`,
+                    date: "1 декабря 2024",
+                    readTime: "14 мин"
+                },
+                {
+                    title: "Бинарные деревья поиска (BST)",
+                    desc: `
+                        <p>Бинарное дерево поиска (Binary Search Tree, BST) — фундаментальная динамическая структура данных, обеспечивающая эффективный поиск, вставку и удаление при сбалансированном распределении элементов. В отличие от массивов, деревья не требуют перемещения элементов при вставке или удалении — достаточно перенаправить несколько указателей.</p>
+                        <h3>Инвариант BST</h3>
+                        <p>Для любого узла дерева выполняется ключевое свойство: все ключи в левом поддереве строго меньше ключа узла, а в правом — строго больше. Это свойство гарантирует, что симметричный обход дерева выдает отсортированную последовательность ключей.</p>
+                        <p>На практике, если данные поступают в случайном порядке, высота BST будет O(log N) в среднем. Однако при последовательной вставке отсортированных данных дерево вырождается в линейный список с высотой O(N) — отсюда необходимость в самобалансирующихся деревьях (АВЛ, красно-черные).</p>
+                        <h3>Варианты обхода дерева</h3>
+                        <p>Обход определяет порядок посещения узлов и имеет прямое прикладное значение:</p>
+                        <ul>
+                            <li><strong>Прямой обход (Pre-order):</strong> Корень -> Левое поддерево -> Правое поддерево. Используется для копирования структуры дерева (создание глубокой копии) и для префиксной записи арифметических выражений. При сериализации дерева порядок "корень-потомки" позволяет однозначно восстановить структуру при наличии маркеров nullptr.</li>
+                            <li><strong>Симметричный обход (In-order):</strong> Левое поддерево -> Корень -> Правое поддерево. Дает отсортированную последовательность ключей — это ключевое свойство для реализации ordered map/set. Также используется для поиска k-го по величине элемента с помощью счетчика посещенных узлов.</li>
+                            <li><strong>Обратный обход (Post-order):</strong> Левое поддерево -> Правое поддерево -> Корень. Применяется в деструкторах для безопасного удаления узлов: сначала освобождаются потомки, потом родитель. Также используется для вычисления размера поддеревьев и проверки баланса.</li>
+                        </ul>
+                        <h3>Применение в стандартных библиотеках</h3>
+                        <p>В C++ <code>std::map</code> и <code>std::set</code> традиционно реализованы на красно-черных деревьях (разновидность самобалансирующегося BST). В C++11 добавлены <code>std::unordered_map</code> на хеш-таблицах, но ordered-контейнеры остаются незаменимыми, когда требуется диапазонный поиск или обход в порядке сортировки.</p>`,
+                    date: "8 декабря 2024",
+                    readTime: "11 мин"
+                }
+            ],
+            practice: [
+                {
+                    title: "Работа с большими файлами: реверс строк",
+                    desc: `
+                        <p>В системном программировании часто возникает задача обработки лог-файлов, размер которых превышает доступный объем оперативной памяти. Чтение всего файла в массив в таких случаях невозможно, и требуется подход, основанный на работе с внешней памятью.</p>
+                        <h3>Алгоритм решения</h3>
+                        <p>Для инвертирования файла используется паттерн <strong>внешней памяти</strong>, основанный на абстрактной структуре данных Стек (LIFO):</p>
+                        <ol>
+                            <li>Исходный файл читается небольшими блоками (чанками), которые помещаются в буфер в оперативной памяти.</li>
+                            <li>При переполнении буфера его содержимое записывается во временный файл на диске <em>в обратном порядке</em>. Буфер очищается.</li>
+                            <li>После разбиения всего файла начинаем читать временные файлы с конца (последний созданный чанк читается первым) и последовательно сливаем их в итоговый <code>output.txt</code>.</li>
+                        </ol>
+                        <p>Таким образом, мы используем свойство стека (LIFO) на уровне файловых блоков, избегая загрузки всего файла в RAM.</p>
+                        <h3>Разбор реализации</h3>
+                        <p>Константа <code>MAX_LINES_IN_RAM</code> определяет размер буфера. В производственном коде ее стоит вычислять динамически на основе доступной памяти. Временные файлы создаются с именами <code>temp_0.txt</code>, <code>temp_1.txt</code> и т.д., а их имена хранятся в векторе — именно этот вектор и играет роль стека при финальной сборке.</p>
+                        <p>Обратите внимание на использование <code>std::remove</code> для удаления временных файлов после слияния. Без этого диск быстро заполнится мусором при многократном запуске программы.</p>`,
+                    code: `#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+
+const size_t MAX_LINES_IN_RAM = 10000; 
+
+int main() {
+    std::ifstream inFile("input.txt");
+    std::vector<std::string> tempFileNames; 
+    std::vector<std::string> buffer;        
+    std::string line;
+    int chunkIndex = 0;
+
+    // Чтение блоками и запись во временные файлы
+    while (std::getline(inFile, line)) {
+        buffer.push_back(line);
+        if (buffer.size() >= MAX_LINES_IN_RAM) {
+            std::string tempName = "temp_" + std::to_string(chunkIndex++) + ".txt";
+            std::ofstream tempOut(tempName);
+            for (int i = buffer.size() - 1; i >= 0; --i) {
+                tempOut << buffer[i] << "\\n";
+            }
+            tempOut.close();
+            tempFileNames.push_back(tempName);
+            buffer.clear();
+        }
+    }
+
+    // Обработка остатка
+    if (!buffer.empty()) {
+        std::string tempName = "temp_" + std::to_string(chunkIndex++) + ".txt";
+        std::ofstream tempOut(tempName);
+        for (int i = buffer.size() - 1; i >= 0; --i) tempOut << buffer[i] << "\\n";
+        tempOut.close();
+        tempFileNames.push_back(tempName);
+        buffer.clear();
+    }
+    
+    // Сборка итогового файла
+    std::ofstream outFile("output.txt");
+    for (int i = tempFileNames.size() - 1; i >= 0; --i) {
+        std::ifstream tempIn(tempFileNames[i]);
+        while (std::getline(tempIn, line)) outFile << line << "\\n";
+        tempIn.close();
+        std::remove(tempFileNames[i].c_str()); // Удаление временного файла
+    }
+
+    return 0;
+}`,
+                    date: "10 ноября 2024",
+                    readTime: "9 мин"
+                },
+                {
+                    title: "Метрики деревьев: внутренний путь",
+                    desc: `
+                        <p>Внутренний путь дерева — важная метрика, характеризующая суммарную глубину всех внутренних узлов. Разделив эту величину на количество узлов, получаем среднюю стоимость успешного поиска элемента.</p>
+                        <h3>Подход к реализации</h3>
+                        <p>Для обхода используется рекурсивный прямой обход (сверху вниз). На каждом шаге рекурсии передается текущая глубина <code>depth</code>, которая увеличивается на 1 при спуске к потомкам.</p>
+                        <p>Счетчики узлов и суммы глубины передаются <em>по ссылке</em> <code>int&</code>, чтобы накапливать результат сквозь все ветви рекурсии. Это классический прием обхода дерева с агрегацией данных.</p>
+                        <h3>Что важно понять</h3>
+                        <p>Корень имеет глубину 0, его прямые потомки — 1, и так далее. Передача по ссылке критически важна: если передавать по значению, каждая ветвь рекурсии будет работать со своей копией счетчиков, и результат суммироваться не будет.</p>
+                        <p>Функция <code>getAvgInternalPath</code> обрабатывает вырожденный случай пустого дерева, возвращая 0.0. В реальных приложениях это может быть сигналом ошибки, в зависимости от контекста.</p>`,
+                    code: `#include <iostream>
+using namespace std;
+
+struct Node {
+    int data; Node* left; Node* right;
+    Node(int v) : data(v), left(nullptr), right(nullptr) {}
+};
+
+// Рекурсивный обход с накоплением глубины
+void calcPath(Node* root, int depth, int& totalPath, int& count) {
+    if (!root) return;
+    
+    totalPath += depth; // Прибавляем глубину текущего узла
+    count++;            // Считаем узел
+    
+    calcPath(root->left, depth + 1, totalPath, count);
+    calcPath(root->right, depth + 1, totalPath, count);
+}
+
+double getAvgInternalPath(Node* root) {
+    if (!root) return 0.0;
+    
+    int totalPath = 0;
+    int count = 0;
+    
+    // Вызов от корня (глубина 0)
+    calcPath(root, 0, totalPath, count);
+    
+    return static_cast<double>(totalPath) / count;
+}
+
+int main() {
+    Node* root = new Node(10);
+    root->left = new Node(5);
+    root->right = new Node(15);
+    
+    cout << "Средний путь: " << getAvgInternalPath(root) << endl;
+    return 0;
+}`,
+                    date: "14 ноября 2024",
+                    readTime: "6 мин"
+                },
+                {
+                    title: "Оптимизация: гибридная быстрая сортировка",
+                    desc: `
+                        <p>Классический QuickSort отлично справляется с большими объемами данных, но для подмассивов из 10-20 элементов накладные расходы на рекурсивные вызовы и кэш-промахи становятся существенными.</p>
+                        <h3>Суть гибридного подхода</h3>
+                        <p>Когда размер подмассива становится равен или меньше порога <code>K</code>, рекурсия принудительно останавливается. Массив остается "почти отсортированным". Для окончательной доводки мелких участков применяется локальная сортировка обменом (пузырьком) или вставками, которая работает на таких данных мгновенно благодаря локальности кэша процессора.</p>
+                        <p>Оптимальное значение <code>K</code> обычно лежит в диапазоне 10-20 и зависит от конкретной архитектуры. Эмпирически установлено, что для современных процессоров x86 оптимальное K ≈ 16.</p>
+                        <h3>Разбор кода</h3>
+                        <p>Функция <code>bubbleLocal</code> работает не с копией подмассива, а с ссылкой на исходный вектор, но ограничивает действие индексами <code>l</code> и <code>r</code>. Это позволяет избежать лишнего копирования данных.</p>
+                        <p>Выбор pivot по формуле <code>a[l + (r - l) / 2]</code> — это простая, но эффективная эвристика "середина диапазона". Она защищает от худшего случая на уже отсортированных данных лучше, чем выбор крайнего элемента.</p>`,
+                    code: `#include <iostream>
+#include <vector>
+using namespace std;
+
+// Локальная сортировка обменом
+void bubbleLocal(vector<int>& a, int l, int r) {
+    for (int i = l; i < r; i++) {
+        bool swapped = false;
+        for (int j = l; j < r - (i - l); j++) {
+            if (a[j] > a[j+1]) {
+                swap(a[j], a[j+1]);
+                swapped = true;
+            }
+        }
+        // Оптимизация: выход при отсортированном участке
+        if (!swapped) break;
+    }
+}
+
+// Модифицированная быстрая сортировка
+void quickHybrid(vector<int>& a, int l, int r, int K) {
+    // Остановка рекурсии при малом размере
+    if (r - l + 1 <= K) {
+        if (l < r) bubbleLocal(a, l, r);
+        return;
+    }
+
+    int i = l, j = r;
+    int pivot = a[l + (r - l) / 2];
+
+    while (i <= j) {
+        while (a[i] < pivot) i++;
+        while (a[j] > pivot) j--;
+        if (i <= j) {
+            swap(a[i], a[j]);
+            i++; j--;
+        }
+    }
+
+    if (l < j) quickHybrid(a, l, j, K);
+    if (i < r) quickHybrid(a, i, r, K);
+}
+
+int main() {
+    vector<int> arr = {42, 12, 85, 33, 64, 21, 9, 50, 11, 4};
+    int K = 3; // Порог гибридизации
+    
+    quickHybrid(arr, 0, arr.size() - 1, K);
+    
+    for (int x : arr) cout << x << " ";
+    return 0;
+}`,
+                    date: "20 ноября 2024",
+                    readTime: "10 мин"
+                },
+                {
+                    title: "Волновой алгоритм заливки на графах",
+                    desc: `
+                        <p>Задача поиска замкнутых областей в двумерном массиве (например, пикселей, залитых границей определенного цвета) решается методами обхода графов. Прямой перебор внутренних элементов сложен из-за неопределенности формы границы.</p>
+                        <h3>Логика заливки (Flood Fill)</h3>
+                        <p>Более элегантный подход — применить алгоритм поиска в ширину (BFS) ко всем элементам <strong>снаружи</strong> области:</p>
+                        <ol>
+                            <li>Проходим по краям матрицы и помещаем стартовые координаты в очередь (<code>std::queue</code>).</li>
+                            <li>Извлекаем узел из очереди, заливаем соседей и добавляем их в очередь.</li>
+                            <li>Волна останавливается у границ фигуры, оставив внутренние элементы нетронутыми.</li>
+                        </ol>
+                        <p>Оставшиеся незалитыми элементы и составляют искомую замкнутую область.</p>
+                        <h3>Почему это работает</h3>
+                        <p>Граница фигуры (единицы в матрице) служат препятствием для волны. Поскольку волна начинается с периметра всей матрицы, она обойдет все "наружные" нули, но не сможет проникнуть внутрь замкнутой области. Это классический прием инверсии задачи: вместо поиска внутренности ищем внешность и вычитаем из общего.</p>
+                        <p>Массивы <code>dx</code> и <code>dy</code> описывают четыре направления движения (вверх, вниз, влево, вправо). Структура <code>std::pair</code> используется для хранения координат — в C++11 и выше можно заменить на <code>std::tuple</code> или собственную структуру.</p>`,
+                    code: `#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int countEnclosedZeros(vector<vector<int>>& grid) {
+    int N = grid.size();
+    if (N == 0) return 0;
+    queue<pair<int, int>> q;
+
+    // 1. Поиск стартовых точек на границе матрицы
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (i == 0 || i == N - 1 || j == 0 || j == N - 1) {
+                if (grid[i][j] == 0) {
+                    q.push({i, j});
+                    grid[i][j] = 2; // Помечаем как "наружный" элемент
+                }
+            }
+        }
+    }
+
+    // 2. Распространение волны (поиск в ширину)
+    int dx[] = {-1, 1, 0, 0};
+    int dy[] = {0, 0, -1, 1};
+    
+    while (!q.empty()) {
+        auto [x, y] = q.front(); 
+        q.pop();
+        
+        for (int i = 0; i < 4; i++) {
+            int nx = x + dx[i], ny = y + dy[i];
+            if (nx >= 0 && nx < N && ny >= 0 && ny < N && grid[nx][ny] == 0) {
+                grid[nx][ny] = 2;
+                q.push({nx, ny});
+            }
+        }
+    }
+
+    // 3. Подсчет выживших элементов (замкнутых внутри)
+    int count = 0;
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++)
+            if (grid[i][j] == 0) count++;
+            
+    return count;
+}`,
+                    date: "25 ноября 2024",
+                    readTime: "8 мин"
+                },
+                {
+                    title: "Оптимизация алгоритма: вставки с обратным барьером",
+                    desc: `
+                        <p>Использование барьерного элемента — классический паттерн оптимизации, позволяющий избавиться от дополнительной проверки выхода за границы в цикле <code>while</code>.</p>
+                        <h3>Инвертированная логика</h3>
+                        <p>В стандартной сортировке вставками массив строится слева, а барьер помещается в нулевой индекс. В данной реализации логика инвертирована: отсортированная часть растет <strong>справа</strong>, поэтому внешний цикл идет от конца к началу (<code>i--</code>). Барьер размещается в специально выделенном месте в конце структуры.</p>
+                        <p>Ключевое преимущество — внутренний цикл не содержит проверки выхода за границы, так как барьер гарантированно остановит цикл.</p>
+                        <h3>Нюансы реализации</h3>
+                        <p>Массив временно увеличивается на один элемент с помощью <code>arr.push_back(0)</code>. После завершения сортировки лишний элемент удаляется вызовом <code>arr.pop_back()</code>. Это работает корректно только для векторов — для статических массивов потребовался бы отдельный буферный элемент.</p>
+                        <p>Обратите внимание: условие внутреннего цикла <code>arr[j] < key</code> — здесь сравнение "меньше", а не "больше", потому что мы сдвигаемся вправо, а не влево. Это частый источник ошибок при инверсии алгоритма.</p>`,
+                    code: `#include <iostream>
+#include <vector>
+using namespace std;
+
+// Модифицированная сортировка простыми включениями (справа налево)
+void insertionSortEndBarrier(vector<int>& arr) {
+    if (arr.empty()) return;
+    int n = arr.size();
+    
+    // Временно увеличиваем массив для хранения барьера
+    arr.push_back(0); 
+
+    // Внешний цикл идет справа налево
+    for (int i = n - 2; i >= 0; i--) {
+        int key = arr[i];
+        
+        // Установка барьера в конец
+        arr[n] = key; 
+
+        int j = i + 1;
+        
+        // Внутренний цикл: сдвиг влево
+        // Нет проверки выхода за границы — барьер остановит цикл!
+        while (arr[j] < key) {
+            arr[j - 1] = arr[j];
+            j++;
+        }
+        
+        // Вставка на освободившееся место
+        arr[j - 1] = key;
+    }
+    
+    // Возвращаем исходный размер
+    arr.pop_back(); 
+}
+
+int main() {
+    vector<int> data = {42, 12, 85, 33, 64, 21, 9, 50};
+    insertionSortEndBarrier(data);
+    for(int num : data) cout << num << " ";
+    return 0;
+}`,
+                    date: "28 ноября 2024",
+                    readTime: "7 мин"
+                },
+                {
+                    title: "Комбинаторика: подмножества и битовые маски",
+                    desc: `
+                        <p>Генерация всех возможных комбинаций элементов множества — фундаментальная задача комбинаторики. В программировании она часто сводится к элегантным битовым манипуляциям, которые значительно эффективнее рекурсивных алгоритмов с возвратом.</p>
+                        <h3>Алгоритм</h3>
+                        <p>Множество из N элементов имеет ровно 2^N подмножеств. Каждой комбинации можно однозначно сопоставить двоичное число от 0 до 2^N - 1. Наличие i-го бита (единица) означает присутствие i-го элемента в подмножестве.</p>
+                        <p>Для вычисления степени двойки применяется побитовый сдвиг <code>1 << N</code>, а проверка бита — через логическое И: <code>mask & (1 << i)</code>.</p>
+                        <h3>Почему это эффективно</h3>
+                        <p>Рекурсивный перебор с возвратом (backtracking) требует O(N) памяти под стек вызовов и содержит накладные расходы на вызовы функций. Битовый подход работает за O(1) дополнительной памяти и O(N * 2^N) времени, что оптимально для полного перебора.</p>
+                        <p>Для N = 20 перебор 2^20 = 1 048 576 комбинаций занимает доли секунды на современном процессоре. При N > 20 полный перебор становится непрактичным, и требуются эвристики или динамическое программирование.</p>`,
+                    code: `#include <iostream>
+#include <vector>
+using namespace std;
+
+void printSubsets(const vector<int>& set) {
+    int n = set.size();
+    
+    // Общее количество подмножеств: 2^n
+    int totalSubsets = 1 << n; 
+
+    // Перебор масок от 00..00 до 11..11
+    for (int mask = 0; mask < totalSubsets; mask++) {
+        cout << "{ ";
+        
+        for (int i = 0; i < n; i++) {
+            // Если i-й бит включен, выводим элемент
+            if ((mask & (1 << i)) != 0) {
+                cout << set[i] << " ";
+            }
+        }
+        cout << "}\\n";
+    }
+}
+
+int main() {
+    vector<int> mySet = {10, 20, 30};
+    printSubsets(mySet);
+    return 0;
+}`,
+                    date: "2 декабря 2024",
+                    readTime: "7 мин"
+                },
+                {
+                    title: "Анализ деревьев: идеальная сбалансированность",
+                    desc: `
+                        <p>Важно различать терминологию в алгоритмах: АВЛ-сбалансированность оценивает <em>высоту</em> поддеревьев, тогда как идеальная сбалансированность оценивает <em>количество узлов</em> в них.</p>
+                        <h3>Линейная оптимизация O(N)</h3>
+                        <p>Наивный алгоритм считает узлы заново для каждого потомка, что дает сложность O(N^2). Оптимальный подход использует обратный обход: считаем узлы снизу вверх, возвращая их количество из рекурсии.</p>
+                        <p>Если на каком-то этапе баланс нарушается (разница количества узлов больше 1), возвращаем сигнальное значение <code>-1</code>, которое мгновенно "пробрасывается" вверх по стеку рекурсии, сворачивая оставшиеся вычисления.</p>
+                        <h3>Паттерн "сигнальный код"</h3>
+                        <p>Использование отрицательного значения как кода ошибки — распространенная техника в рекурсивных алгоритмах на деревьях. Она позволяет избежать лишних вычислений после обнаружения нарушения условия. Без этой оптимизации алгоритм всегда обходил бы все узлы, даже когда баланс уже нарушен.</p>
+                        <p>Условие проверяется <em>после</em> рекурсивных вызовов (обратный обход), а не до них. Это гарантирует, что мы проверяем баланс только для тех узлов, чьи поддеревья уже проверены.</p>`,
+                    code: `#include <iostream>
+#include <cmath>
+using namespace std;
+
+struct Node { int data; Node* left; Node* right; };
+
+// Возвращает количество узлов или -1 при нарушении
+int checkPerfectBalance(Node* node) {
+    if (node == nullptr) return 0;
+
+    int leftCount = checkPerfectBalance(node->left);
+    if (leftCount == -1) return -1; // Сигнал обрыва
+
+    int rightCount = checkPerfectBalance(node->right);
+    if (rightCount == -1) return -1; // Сигнал обрыва
+
+    // Условие: разница УЗЛОВ не больше 1
+    if (abs(leftCount - rightCount) > 1) {
+        return -1; 
+    }
+
+    return leftCount + rightCount + 1;
+}
+
+bool isPerfectlyBalanced(Node* root) {
+    return checkPerfectBalance(root) != -1;
+}`,
+                    date: "5 декабря 2024",
+                    readTime: "6 мин"
+                },
+                {
+                    title: "Генерация случайных последовательностей: Фишер-Йетс",
+                    desc: `
+                        <p>Типичная проблема при генерации уникальных случайных номеров (жеребьевка, тасование карт) — коллизии. Наивный алгоритм постоянно проверяет, не было ли число сгенерировано ранее, что приводит к деградации производительности.</p>
+                        <h3>Алгоритм Фишера-Йетса</h3>
+                        <p>Это математически строго оптимальный метод тасования, работающий за гарантированное время <strong>O(N)</strong>:</p>
+                        <ol>
+                            <li>Инициализируется массив исходных значений.</li>
+                            <li>Алгоритм итерируется с конца к началу.</li>
+                            <li>На каждом шаге случайно выбирается элемент из неперемешанной части и меняется местами с текущим конечным элементом.</li>
+                        </ol>
+                        <p>Каждая перестановка равновероятна, что делает алгоритм идеальным для случайного тасования.</p>
+                        <h3>Доказательство корректности</h3>
+                        <p>После i-го шага (считая с конца) последние i элементов содержат равновероятную случайную выборку из N элементов. На первом шаге выбирается случайный элемент из N и ставится на последнее место — вероятность каждого элемента оказаться там равна 1/N. На втором шаге — из оставшихся N-1 элементов на предпоследнее место, и так далее. Это индуктивно доказывает равномерность распределения.</p>
+                        <h3>Важное предупреждение</h3>
+                        <p>В примере используется <code>rand() % (i + 1)</code> — это упрощение для учебных целей. В реальном коде используйте <code>std::mt19937</code> из <code>&lt;random&gt;</code> с равномерным распределением, так как <code>rand()</code> имеет ограниченный период и неравномерное младшее распределение при модульном сокращении.</p>`,
+                    code: `#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+// Тасование Фишера-Йетса
+vector<int> fisherYatesShuffle(int N) {
+    vector<int> arr(N);
+    for (int i = 0; i < N; i++) {
+        arr[i] = i + 1;
+    }
+
+    // Проход с конца к началу
+    for (int i = N - 1; i > 0; i--) {
+        // Случайный индекс от 0 до i включительно
+        int j = rand() % (i + 1);
+        
+        // Обмен
+        swap(arr[i], arr[j]);
+    }
+    return arr;
+}
+
+int main() {
+    srand(time(0));
+    
+    vector<int> result = fisherYatesShuffle(15);
+    
+    cout << "Результат тасования:\\n";
+    for(int num : result) {
+        cout << num << " ";
+    }
+    return 0;
+}`,
+                    date: "9 декабря 2024",
+                    readTime: "8 мин"
+                },
+                {
+                    title: "Анализ деревьев: АВЛ-свойства",
+                    desc: `
+                        <p>АВЛ-дерево (названо в честь изобретателей Георгия Адельсон-Вельского и Евгения Ландиса) — это классическое двоичное дерево поиска, сбалансированное по <em>высоте</em>.</p>
+                        <h3>Условие АВЛ-дерева</h3>
+                        <p>Для каждого узла в дереве разность высот его левого и правого поддеревьев (баланс-фактор) может принимать значения только -1, 0 или +1. Это гарантирует высоту дерева O(log N), а значит, и логарифмическое время всех операций.</p>
+                        <p>Код реализации проверки схож с проверкой на идеальную сбалансированность, но вместо суммы узлов возвращается высота ветви (максимум из левой и правой плюс один).</p>
+                        <h3>Разница между идеальной и АВЛ-сбалансированностью</h3>
+                        <table>
+                            <thead><tr><th>Критерий</th><th>Идеальная</th><th>АВЛ</th></tr></thead>
+                            <tbody>
+                                <tr><td>Что сравнивается</td><td>Количество узлов</td><td>Высота поддеревьев</td></tr>
+                                <tr><td>Допустимая разница</td><td>Не более 1 узла</td><td>Не более 1 уровня</td></tr>
+                                <tr><td>Высота дерева</td><td>Минимальная</td><td>O(log N)</td></tr>
+                            </tbody>
+                        </table>
+                        <p>АВЛ-деревья строже, чем красно-черные: они поддерживают более жесткий баланс, что делает поиск быстрее (меньше сравнений), но вставки и удаления требуют больше вращений. Поэтому красно-черные деревья предпочтительны для контейнеров общего назначения (std::map), а АВЛ — для сценариев с преобладанием поиска.</p>`,
+                    code: `#include <iostream>
+#include <cmath>
+#include <algorithm>
+
+using namespace std;
+
+struct Node { int data; Node* left; Node* right; };
+
+// Возвращает ВЫСОТУ дерева или -1 при перекосе
+int checkAVLBalance(Node* node) {
+    if (node == nullptr) return 0;
+
+    int leftHeight = checkAVLBalance(node->left);
+    if (leftHeight == -1) return -1;
+
+    int rightHeight = checkAVLBalance(node->right);
+    if (rightHeight == -1) return -1;
+
+    // В АВЛ-дереве разница ВЫСОТ не может быть больше 1
+    if (abs(leftHeight - rightHeight) > 1) {
+        return -1; 
+    }
+
+    // Возвращаем высоту + 1
+    return max(leftHeight, rightHeight) + 1;
+}
+
+bool isAVLBalanced(Node* root) {
+    return checkAVLBalance(root) != -1;
+}`,
+                    date: "12 декабря 2024",
+                    readTime: "7 мин"
+                }
+            ]
+        };
+
+        const theoryNav = document.getElementById('theory-nav');
+        const practiceNav = document.getElementById('practice-nav');
+        const titleEl = document.getElementById('content-title');
+        const descEl = document.getElementById('content-description');
+        const codeContainer = document.getElementById('code-container');
+        const codeBlock = document.getElementById('code-block');
+        const catBreadcrumb = document.getElementById('breadcrumb-category');
+        const titleBreadcrumb = document.getElementById('breadcrumb-title');
+        const articleDate = document.getElementById('article-date');
+        const readingTime = document.getElementById('reading-time');
+        const categoryBadge = document.getElementById('article-category-badge');
+        const tocContainer = document.getElementById('toc-container');
+        const tocList = document.getElementById('toc-list');
+        const rightToc = document.getElementById('right-toc');
+        const articleFooter = document.getElementById('article-footer');
+
+        let currentCategory = '';
+        let currentIndex = -1;
+        let sidebarCollapsed = false;
+
+        function renderNav(container, items, category, startNum) {
+            items.forEach((item, index) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = '#';
+                a.className = 'block px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-colors border-l-3 border-transparent flex items-center';
+                a.innerHTML = '<span class="nav-number">' + (startNum + index) + '</span><span class="truncate">' + item.title + '</span>';
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    loadArticle(item, category, index);
+                };
+                li.appendChild(a);
+                container.appendChild(li);
+            });
+        }
+
+        function loadArticle(item, category, index) {
+            currentCategory = category;
+            currentIndex = index;
+            document.querySelectorAll('aside a').forEach(el => el.classList.remove('nav-active'));
+            const allItems = [...theoryNav.children, ...practiceNav.children];
+            const offset = category === 'Теория' ? 0 : db.theory.length;
+            if (allItems[index + offset]) {
+                allItems[index + offset].querySelector('a').classList.add('nav-active');
+            }
+            titleEl.innerText = item.title;
+            descEl.innerHTML = item.desc;
+            catBreadcrumb.innerText = category;
+            titleBreadcrumb.innerText = item.title;
+            articleDate.innerText = item.date || '2024';
+            readingTime.innerText = item.readTime || '5 мин';
+            categoryBadge.innerText = category === 'Теория' ? 'Теория' : 'Пример кода';
+            categoryBadge.className = category === 'Теория' 
+                ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700 mb-3'
+                : 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 mb-3';
+            descEl.querySelectorAll('pre code').forEach(block => hljs.highlightElement(block));
+            
+            if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+                MathJax.typesetPromise([descEl]).catch(err => console.error('MathJax:', err));
+            } else if (window.MathJax && window.MathJax.startup && window.MathJax.startup.promise) {
+                window.MathJax.startup.promise.then(() => {
+                    if (window.MathJax.typesetPromise) MathJax.typesetPromise([descEl]);
+                }).catch(err => console.error('MathJax:', err));
+            }
+            
+            if (item.code) {
+                codeContainer.classList.remove('hidden');
+                codeBlock.textContent = item.code;
+                codeBlock.removeAttribute('data-highlighted');
+                hljs.highlightElement(codeBlock);
+            } else {
+                codeContainer.classList.add('hidden');
+            }
+            buildTOC();
+            articleFooter.classList.remove('hidden');
+            updatePrevNext();
+            document.getElementById('main-content-container').scrollTop = 0;
+            const sidebar = document.getElementById('left-sidebar');
+            if (!sidebar.classList.contains('hidden') && window.innerWidth < 768) {
+                toggleMobileSidebar();
+            }
+        }
+
+        function buildTOC() {
+            const headings = descEl.querySelectorAll('h3, h4');
+            if (headings.length === 0) {
+                tocContainer.classList.add('hidden');
+                rightToc.innerHTML = '';
+                return;
+            }
+            tocContainer.classList.remove('hidden');
+            tocList.innerHTML = '';
+            rightToc.innerHTML = '';
+            headings.forEach((heading, i) => {
+                const id = 'heading-' + i;
+                heading.id = id;
+                const link = document.createElement('a');
+                link.href = '#' + id;
+                link.className = 'toc-link' + (heading.tagName === 'H4' ? ' pl-5' : '');
+                link.innerText = heading.innerText;
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                };
+                tocList.appendChild(link.cloneNode(true));
+                rightToc.appendChild(link);
+            });
+        }
+
+        function updatePrevNext() {
+            const allItems = [...db.theory, ...db.practice];
+            const currentGlobalIndex = currentCategory === 'Теория' ? currentIndex : db.theory.length + currentIndex;
+            document.getElementById('prev-btn').style.visibility = currentGlobalIndex > 0 ? 'visible' : 'hidden';
+            document.getElementById('next-btn').style.visibility = currentGlobalIndex < allItems.length - 1 ? 'visible' : 'hidden';
+        }
+
+        function navigatePrev() {
+            const allItems = [...db.theory, ...db.practice];
+            const currentGlobalIndex = currentCategory === 'Теория' ? currentIndex : db.theory.length + currentIndex;
+            if (currentGlobalIndex > 0) {
+                const prevItem = allItems[currentGlobalIndex - 1];
+                const prevCategory = currentGlobalIndex - 1 < db.theory.length ? 'Теория' : 'Примеры';
+                const prevIndex = currentGlobalIndex - 1 < db.theory.length ? currentGlobalIndex - 1 : currentGlobalIndex - 1 - db.theory.length;
+                loadArticle(prevItem, prevCategory, prevIndex);
+            }
+        }
+
+        function navigateNext() {
+            const allItems = [...db.theory, ...db.practice];
+            const currentGlobalIndex = currentCategory === 'Теория' ? currentIndex : db.theory.length + currentIndex;
+            if (currentGlobalIndex < allItems.length - 1) {
+                const nextItem = allItems[currentGlobalIndex + 1];
+                const nextCategory = currentGlobalIndex + 1 < db.theory.length ? 'Теория' : 'Примеры';
+                const nextIndex = currentGlobalIndex + 1 < db.theory.length ? currentGlobalIndex + 1 : currentGlobalIndex + 1 - db.theory.length;
+                loadArticle(nextItem, nextCategory, nextIndex);
+            }
+        }
+
+        function copyCode() {
+            const code = document.getElementById('code-block').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.getElementById('copy-btn');
+                btn.classList.add('copied');
+                btn.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Скопировано!';
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>Копировать';
+                }, 2000);
+            });
+        }
+
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('left-sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            const isOpen = sidebar.classList.contains('translate-x-0');
+            if (isOpen) {
+                sidebar.classList.remove('translate-x-0');
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.remove('open');
+            } else {
+                sidebar.classList.remove('hidden');
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+                overlay.classList.add('open');
+            }
+        }
+
+        function toggleDesktopSidebar() {
+            const sidebar = document.getElementById('left-sidebar');
+            const expandBtn = document.getElementById('expand-sidebar-btn');
+            sidebarCollapsed = !sidebarCollapsed;
+            if (sidebarCollapsed) {
+                sidebar.classList.add('sidebar-collapsed');
+                expandBtn.classList.remove('hidden');
+                expandBtn.classList.add('flex');
+            } else {
+                sidebar.classList.remove('sidebar-collapsed');
+                expandBtn.classList.add('hidden');
+                expandBtn.classList.remove('flex');
+            }
+        }
+
+        function goHome(e) {
+            if (e) e.preventDefault();
+            titleEl.innerText = 'Добро пожаловать в AlgoWiki';
+            descEl.innerHTML = '<p>AlgoWiki — это открытый учебник по алгоритмам и структурам данных на языке C++. Здесь собраны теоретические материалы и практические примеры, которые помогут разобраться в ключевых концепциях программирования.</p><p>Выберите интересующий раздел в навигационном меню слева, чтобы начать изучение. Каждая статья содержит подробное объяснение алгоритма и полный листинг программы с комментариями.</p><h3>О чем этот учебник?</h3><ul><li>Базовые структуры данных и алгоритмы поиска</li><li>Абстрактные типы данных: стек, очередь, дек</li><li>Алгоритмы сортировки: от простых до гибридных</li><li>Бинарные деревья поиска и их свойства</li><li>Практические реализации с оптимизациями</li></ul>';
+            catBreadcrumb.innerText = 'Главная';
+            titleBreadcrumb.innerText = 'Введение';
+            codeContainer.classList.add('hidden');
+            tocContainer.classList.add('hidden');
+            articleFooter.classList.add('hidden');
+            rightToc.innerHTML = '';
+            document.querySelectorAll('aside a').forEach(el => el.classList.remove('nav-active'));
+            document.getElementById('main-content-container').scrollTop = 0;
+        }
+
+        function updateProgress() {
+            const container = document.getElementById('main-content-container');
+            const scrollTop = container.scrollTop;
+            const scrollHeight = container.scrollHeight - container.clientHeight;
+            const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+            document.getElementById('progress-bar').style.width = progress + '%';
+        }
+
+        function toggleTheme() {
+            alert('Темная тема будет доступна в следующем обновлении!');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.altKey && e.key === 'ArrowLeft') {
+                e.preventDefault();
+                navigatePrev();
+            } else if (e.altKey && e.key === 'ArrowRight') {
+                e.preventDefault();
+                navigateNext();
+            }
+        });
+
+        renderNav(theoryNav, db.theory, 'Теория', 1);
+        renderNav(practiceNav, db.practice, 'Примеры', 1 + db.theory.length);
+        
+        setTimeout(() => {
+            loadArticle(db.practice[0], 'Примеры', 0);
+        }, 100);
+    </script>
+</body>
+</html>
